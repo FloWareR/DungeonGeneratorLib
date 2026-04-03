@@ -7,11 +7,11 @@ namespace Core.Generators;
 
 public class DungeonGenerator
 {
-    private readonly IDungeonGenerationStrategy _strategy;
+    private readonly IEnumerable<IDungeonGenerationStep> _pipeline;
 
-    public DungeonGenerator(IDungeonGenerationStrategy strategy)
+    public DungeonGenerator(IDungeonGenerationStep[] pipeline)
     {
-        _strategy = strategy;
+        _pipeline = pipeline;
     }
 
     public DungeonMap Generate(IReadOnlyList<RoomTemplate> templates, DungeonGenerationConfig config)
@@ -21,6 +21,13 @@ public class DungeonGenerator
             return new DungeonMap();
         }
 
-        return _strategy.Generate(templates, config);
+        var context = new DungeonGenerationContext(config, templates);
+
+        foreach (var step in _pipeline)
+        {
+            step.Execute(context);
+        }
+
+        return context.Map;
     }
 }

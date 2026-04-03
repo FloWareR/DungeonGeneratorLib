@@ -7,7 +7,7 @@ public class Room
 {
     public Guid InstanceId { get; } = Guid.NewGuid();
     public Position GridPosition { get; }
-    public RoomTemplate Template { get; }
+    public RoomTemplate Template { get; private set; }
 
     public Dictionary<Direction, Guid> Connections { get; } = new();
 
@@ -21,5 +21,10 @@ public class Room
     public void Connect(Direction direction, Room otherRoom)
     {
         Connections[direction] = otherRoom.InstanceId;
+    }
+
+    public void SetTemplate(RoomTemplate template)
+    {
+        Template = template;
     }
 }
