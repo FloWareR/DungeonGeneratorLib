@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Core.Models;
@@ -7,15 +8,9 @@ namespace Core.Diagnostics;
 
 public static class MapVisualizer
 {
-    /// <summary>
-    /// Generates a top-down ASCII representation of the dungeon map at a specific Z-level.
-    /// </summary>
-    public static string ToAsciiString(this DungeonMap map, int zLevel = 0)
+    public static string ToAsciiString(this DungeonMap map, int zLevel = 0, Dictionary<string, char>? typeSymbols = null)
     {
-        if (map.AllRooms.Count == 0)
-        {
-            return "Map is empty.";
-        }
+        if (map.AllRooms.Count == 0) return "Map is empty.";
 
         var sb = new StringBuilder();
 
@@ -32,7 +27,7 @@ public static class MapVisualizer
             {
                 if (map.TryGetRoomAt(new Position(x, y, zLevel), out var room))
                 {
-                    char symbol = GetSymbol(room.Template);
+                    char symbol = GetSymbol(room.Template, typeSymbols);
                     sb.Append($"[{symbol}]");
 
                     if (room.Connections.ContainsKey(Direction.East))
@@ -47,6 +42,7 @@ public static class MapVisualizer
             }
             sb.AppendLine();
 
+            // 2. North/South Connections
             if (y > minY)
             {
                 for (int x = minX; x <= maxX; x++)
@@ -68,44 +64,33 @@ public static class MapVisualizer
         return sb.ToString();
     }
 
-    private static char GetSymbol(RoomTemplate template)
+    private static char GetSymbol(RoomTemplate template, Dictionary<string, char>? typeSymbols)
     {
-        if (template.Type == RoomType.Start) return 'S';
-        if (template.Type == RoomType.Objective) return 'O';
-        if (template.Type == RoomType.Key) return 'K';
-        if (template.Type == RoomType.Hazard) return 'H';
-        if (template.Type == RoomType.Puzzle) return '?';
+        if (typeSymbols != null && typeSymbols.TryGetValue(template.Type, out char customSymbol))
+        {
+            return customSymbol;
+        }
 
         var horizontalExits = template.AvailableExits & ~(Direction.Up | Direction.Down);
 
         return horizontalExits switch
         {
-            // 4-Way
             Direction.North | Direction.South | Direction.East | Direction.West => '┼',
-
-            // Straight Corridors
             Direction.North | Direction.South => '│',
             Direction.East | Direction.West => '─',
-
-            // T-Junctions
             Direction.North | Direction.South | Direction.East => '├',
             Direction.North | Direction.South | Direction.West => '┤',
             Direction.East | Direction.West | Direction.North => '┴',
             Direction.East | Direction.West | Direction.South => '┬',
-
-            // Corners
             Direction.North | Direction.East => '└',
             Direction.North | Direction.West => '┘',
             Direction.South | Direction.East => '┌',
             Direction.South | Direction.West => '┐',
-
             Direction.North => '^',
             Direction.South => 'v',
             Direction.East => '>',
             Direction.West => '<',
-
             Direction.None => '■',
-
             _ => '#'
         };
     }

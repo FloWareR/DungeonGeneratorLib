@@ -24,7 +24,7 @@ public class RandomizedDfsStrategy : IDungeonGenerationStrategy
 
         // Intialize with a random starting room
         var startTemplates = templates
-          .Where(t => t.Type == RoomType.Start).ToList();
+          .Where(t => t.Type == config.StartRoomType).ToList();
         var startTemplate = startTemplates.Count > 0
           ? startTemplates[random.Next(startTemplates.Count)]
           : templates[random.Next(templates.Count)];
@@ -88,7 +88,7 @@ public class RandomizedDfsStrategy : IDungeonGenerationStrategy
         return map;
     }
 
-    private bool CanSpawnType(RoomType type, DungeonMap map, DungeonGenerationConfig config)
+    private bool CanSpawnType(string type, DungeonMap map, DungeonGenerationConfig config)
     {
         if (!config.TypeLimits.TryGetValue(type, out var limit))
         {

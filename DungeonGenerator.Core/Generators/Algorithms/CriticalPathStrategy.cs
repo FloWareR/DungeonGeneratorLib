@@ -16,11 +16,12 @@ public class CriticalPathStrategy : IDungeonGenerationStrategy
         var random = new Random(config.Seed);
         var untriedExits = new Dictionary<Guid, List<Direction>>();
 
-        var startTemplate = templates.FirstOrDefault(t => t.Type == RoomType.Start) ?? templates[0];
-        var objectiveTemplate = templates.FirstOrDefault(t => t.Type == RoomType.Objective);
+        var startTemplate = templates.FirstOrDefault(t => t.Type == config.StartRoomType) ?? templates[0];
+        var objectiveTemplate = templates.FirstOrDefault(t => t.Type == config.ObjectiveRoomType);
 
+        // Structural transit rooms are any room that ISN'T the Start or Objective
         var transitTemplates = templates
-            .Where(t => t.Type == RoomType.Normal)
+            .Where(t => t.Type != config.StartRoomType && t.Type != config.ObjectiveRoomType)
             .Where(t => t.AvailableExits.GetActiveFlags().Count() > 1)
             .ToList();
 
@@ -159,9 +160,8 @@ public class CriticalPathStrategy : IDungeonGenerationStrategy
         return validTemplates;
     }
 
-    private bool CanSpawnType(RoomType type, DungeonMap map, DungeonGenerationConfig config)
+    private bool CanSpawnType(string type, DungeonMap map, DungeonGenerationConfig config)
     {
-        if (!config.TypeLimits.TryGetValue(type, out var limit)) return true;
-        return map.AllRooms.Count(r => r.Template.Type == type) < limit.Max;
+        if (!config.TypeLimits.TryGetValue(type, out var limit)) return true; return map.AllRooms.Count(r => r.Template.Type == type) < limit.Max;
     }
 }

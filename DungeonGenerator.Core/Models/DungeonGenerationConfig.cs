@@ -10,5 +10,9 @@ public class DungeonGenerationConfig
     public int Seed { get; init; } = Environment.TickCount;
     public int MaxTotalRooms { get; init; } = 10;
 
-    public Dictionary<RoomType, RoomLimit> TypeLimits { get; init; } = new();
+    // The algorithms will look for these specific strings to build the main path
+    public string StartRoomType { get; init; } = "Start";
+    public string ObjectiveRoomType { get; init; } = "Objective";
+
+    public Dictionary<string, RoomLimit> TypeLimits { get; init; } = new();
 }
