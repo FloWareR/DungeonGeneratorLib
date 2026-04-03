@@ -2,12 +2,14 @@ using System.Collections.Generic;
 using Core.State;
 using Core.Models;
 using Core.Interfaces;
+using System.Linq;
 
 namespace Core.Generators;
 
 public class DungeonGenerator
 {
     private readonly IEnumerable<IDungeonGenerationStep> _pipeline;
+    public IReadOnlyList<IDungeonGenerationStep> Steps => _pipeline.ToList();
 
     public DungeonGenerator(IDungeonGenerationStep[] pipeline)
     {

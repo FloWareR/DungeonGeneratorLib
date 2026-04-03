@@ -12,13 +12,13 @@ public class DungeonMap
     public IReadOnlyCollection<Room> AllRooms => _rooms.Values;
 
     ///<summary>Returns the first room matching a specific type</summary>
-    public Room? GetRoomByType(string type)
+    public Room? GetRoomByType(RoomType type)
     {
         return _rooms.Values.FirstOrDefault(t => t.Template.Type == type);
     }
 
     ///<summary>Returns all rooms containing a specific tag</summary>
-    public IEnumerable<Room> GetRoomsByType(string tag)
+    public IEnumerable<Room> GetRoomsByTag(RoomTag tag)
     {
         return _rooms.Values.Where(t => t.Template.Tags.Contains(tag));
     }

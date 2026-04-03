@@ -1,0 +1,226 @@
+[
+  {
+    "Id": "LoadingBay",
+    "Type": "Start",
+    "AvailableExits": "North",
+    "Tags": ["SafeZone", "Tutorial"],
+    "SpawnWeight": 10
+  },
+  {
+    "Id": "LoadingBayAlt",
+    "Type": "Start",
+    "AvailableExits": "North, South, East",
+    "Tags": ["SafeZone"],
+    "SpawnWeight": 10
+  },
+  {
+    "Id": "InsertionPoint",
+    "Type": "Start",
+    "AvailableExits": "South",
+    "Tags": ["Stealth", "Entry"],
+    "SpawnWeight": 5
+  },
+  {
+    "Id": "DropOffZone",
+    "Type": "Objective",
+    "AvailableExits": "South, East",
+    "Tags": ["HighSecurity"],
+    "SpawnWeight": 10
+  },
+  {
+    "Id": "ExtractionZone",
+    "Type": "Objective",
+    "AvailableExits": "North",
+    "Tags": ["Escape"],
+    "SpawnWeight": 10
+  },
+  {
+    "Id": "CoreReactor",
+    "Type": "Objective",
+    "AvailableExits": "West",
+    "Tags": ["Critical", "Destroy"],
+    "SpawnWeight": 5
+  },
+  {
+    "Id": "SecurityCheckpoint",
+    "Type": "Key",
+    "AvailableExits": "East, West",
+    "Tags": ["Locked", "LaserTraps"],
+    "SpawnWeight": 10
+  },
+  {
+    "Id": "MainHub",
+    "Type": "Default",
+    "AvailableExits": "North, South, East, West",
+    "Tags": [],
+    "SpawnWeight": 20
+  },
+  {
+    "Id": "MainHubLarge",
+    "Type": "Default",
+    "AvailableExits": "North, South, East, West",
+    "Tags": ["Large"],
+    "SpawnWeight": 10
+  },
+  {
+    "Id": "MainHubBroken",
+    "Type": "Default",
+    "AvailableExits": "North, South, East",
+    "Tags": ["Damaged"],
+    "SpawnWeight": 5
+  },
+  {
+    "Id": "HallwayNS",
+    "Type": "Default",
+    "AvailableExits": "North, South",
+    "Tags": [],
+    "SpawnWeight": 50
+  },
+  {
+    "Id": "HallwayEW",
+    "Type": "Default",
+    "AvailableExits": "East, West",
+    "Tags": [],
+    "SpawnWeight": 50
+  },
+  {
+    "Id": "CornerNE",
+    "Type": "Default",
+    "AvailableExits": "North, East",
+    "Tags": [],
+    "SpawnWeight": 30
+  },
+  {
+    "Id": "CornerNW",
+    "Type": "Default",
+    "AvailableExits": "North, West",
+    "Tags": [],
+    "SpawnWeight": 30
+  },
+  {
+    "Id": "CornerSE",
+    "Type": "Default",
+    "AvailableExits": "South, East",
+    "Tags": [],
+    "SpawnWeight": 30
+  },
+  {
+    "Id": "CornerSW",
+    "Type": "Default",
+    "AvailableExits": "South, West",
+    "Tags": [],
+    "SpawnWeight": 30
+  },
+  {
+    "Id": "TJunctionN",
+    "Type": "Default",
+    "AvailableExits": "North, East, West",
+    "Tags": [],
+    "SpawnWeight": 15
+  },
+  {
+    "Id": "TJunctionS",
+    "Type": "Default",
+    "AvailableExits": "South, East, West",
+    "Tags": [],
+    "SpawnWeight": 15
+  },
+  {
+    "Id": "TJunctionE",
+    "Type": "Default",
+    "AvailableExits": "North, South, East",
+    "Tags": [],
+    "SpawnWeight": 15
+  },
+  {
+    "Id": "TJunctionW",
+    "Type": "Default",
+    "AvailableExits": "North, South, West",
+    "Tags": [],
+    "SpawnWeight": 15
+  },
+  {
+    "Id": "Crossroad",
+    "Type": "Default",
+    "AvailableExits": "North, South, East, West",
+    "Tags": [],
+    "SpawnWeight": 10
+  },
+  {
+    "Id": "DeadEndN",
+    "Type": "Default",
+    "AvailableExits": "North",
+    "Tags": [],
+    "SpawnWeight": 5
+  },
+  {
+    "Id": "DeadEndS",
+    "Type": "Default",
+    "AvailableExits": "South",
+    "Tags": [],
+    "SpawnWeight": 5
+  },
+  {
+    "Id": "DeadEndE",
+    "Type": "Default",
+    "AvailableExits": "East",
+    "Tags": [],
+    "SpawnWeight": 5
+  },
+  {
+    "Id": "DeadEndW",
+    "Type": "Default",
+    "AvailableExits": "West",
+    "Tags": [],
+    "SpawnWeight": 5
+  },
+  {
+    "Id": "StorageCloset",
+    "Type": "Default",
+    "AvailableExits": "West",
+    "Tags": ["Loot"],
+    "SpawnWeight": 5
+  },
+  {
+    "Id": "LaserHall",
+    "Type": "Hazard",
+    "AvailableExits": "North, South",
+    "Tags": ["Laser", "Damage"],
+    "SpawnWeight": 10
+  },
+  {
+    "Id": "SpikeTrapRoom",
+    "Type": "Hazard",
+    "AvailableExits": "East, West",
+    "Tags": ["Spikes", "Timing"],
+    "SpawnWeight": 10
+  },
+  {
+    "Id": "GasChamber",
+    "Type": "Hazard",
+    "AvailableExits": "North, East",
+    "Tags": ["Poison"],
+    "SpawnWeight": 5
+  },
+  {
+    "Id": "SwitchPuzzle",
+    "Type": "Puzzle",
+    "AvailableExits": "North, South",
+    "Tags": ["Switch"],
+    "SpawnWeight": 10
+  },
+  {
+    "Id": "PressurePlatePuzzle",
+    "Type": "Puzzle",
+    "AvailableExits": "East, West",
+    "Tags": ["Weight"],
+    "SpawnWeight": 10
+  },
+  {
+    "Id": "CodeLockRoom",
+    "Type": "Puzzle",
+    "AvailableExits": "North",
+    "Tags": ["Code"],
+    "SpawnWeight": 5
+  }
+]

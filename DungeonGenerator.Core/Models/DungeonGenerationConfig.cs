@@ -13,10 +13,10 @@ public class DungeonGenerationConfig
     public int MinObjectiveDistance { get; init; } = 3;
     public int MaxObjectiveDistance { get; init; } = 10;
 
-    // The algorithms will look for these specific strings to build the main path
-    public string StartRoomType { get; init; } = "Start";
-    public string ObjectiveRoomType { get; init; } = "Objective";
-    public string StandardRoomType { get; init; } = "Standard";
+    // The algorithms will look for these specific RoomTypes to build the main path
+    public RoomType StartRoomType { get; init; } = new("Start");
+    public RoomType ObjectiveRoomType { get; init; } = new("Objective");
+    public RoomType StandardRoomType { get; init; } = new("Normal");
 
-    public Dictionary<string, RoomLimit> TypeLimits { get; init; } = new();
+    public Dictionary<RoomType, RoomLimit> TypeLimits { get; init; } = new();
 }

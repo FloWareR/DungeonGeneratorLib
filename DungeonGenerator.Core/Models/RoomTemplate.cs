@@ -4,11 +4,13 @@ namespace Core.Models;
 
 public class RoomTemplate
 {
+    // Identity
     public string Id { get; init; } = string.Empty;
     public string Name { get; init; } = string.Empty;
 
-    public string Type { get; init; } = "Normal";
-    public IReadOnlyList<string> Tags { get; init; } = new List<string>();
+    //Metadata
+    public RoomType Type { get; init; } = new("Normal");
+    public IReadOnlyList<RoomTag> Tags { get; init; } = new List<RoomTag>();
     public Direction AvailableExits { get; init; } = Direction.None;
     public int SpawnWeight { get; init; } = 1;
 }

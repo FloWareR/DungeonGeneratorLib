@@ -12,8 +12,8 @@ public class ApplyConstraintsStep : IDungeonGenerationStep
 {
     public void Execute(DungeonGenerationContext context)
     {
-        var normalRooms = context.Map.AllRooms.Where(r => r.Template.Type == "Normal").ToList();
         var startRoom = context.Map.GetRoomByType(context.Config.StartRoomType);
+        var normalRooms = context.Map.AllRooms.Where(r => r.Template.Type == context.Config.StandardRoomType).ToList();
         var roomDistances = startRoom != null ? CalculateTopologicalDistances(startRoom, context.Map) : new Dictionary<Guid, int>();
 
         foreach (var limit in context.Config.TypeLimits)
@@ -74,15 +74,9 @@ public class ApplyConstraintsStep : IDungeonGenerationStep
     {
         var distances = new Dictionary<Guid, int>();
         var roomsById = map.AllRooms.ToDictionary(r => r.InstanceId);
-        var queue = new Queue<(Room Room, int Distance)>();
-
-        queue.Enqueue((startRoom, 0));
-        distances[startRoom.InstanceId] = 0;
-
-        while (queue.Count > 0)
+        var queue = new Queue<(Room Room, int Distance)>(); queue.Enqueue((startRoom, 0)); distances[startRoom.InstanceId] = 0; while (queue.Count > 0)
         {
             var (current, dist) = queue.Dequeue();
-
             foreach (var connectedId in current.Connections.Values)
             {
                 if (!distances.ContainsKey(connectedId) && roomsById.TryGetValue(connectedId, out var neighbor))
@@ -92,7 +86,6 @@ public class ApplyConstraintsStep : IDungeonGenerationStep
                 }
             }
         }
-
         return distances;
     }
 

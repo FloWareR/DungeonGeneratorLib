@@ -3,6 +3,7 @@ using Core.Generators.Steps.Mutators;
 using Core.Interfaces;
 using Core.Models;
 using Core.Diagnostics;
+using DungeonGenerator.Sandbox.Data;
 
 namespace DungeonGenerator.Sandbox;
 
@@ -12,96 +13,48 @@ public class Program
     {
         Console.WriteLine(" --- Starting Pipeline Generation ---");
 
-        var templates = new List<RoomTemplate>
-        {
-            // Start Rooms
-            new RoomTemplate { Id = "LoadingBay", Type = "Start", AvailableExits = Direction.North, Tags = new[] { "SafeZone", "Tutorial" }, SpawnWeight = 10 },
-            new RoomTemplate { Id = "LoadingBayAlt", Type = "Start", AvailableExits = Direction.East | Direction.South | Direction.North, Tags = new[] { "SafeZone" }, SpawnWeight = 10 },
-            new RoomTemplate { Id = "InsertionPoint", Type = "Start", AvailableExits = Direction.South, Tags = new[] { "Stealth", "Entry" }, SpawnWeight = 5 },
+        var path = Path.Combine(AppContext.BaseDirectory, "Data", "templates.json");
+        var templates = TemplateMapper.LoadFromJson(path);
 
-            // Objectives
-            new RoomTemplate { Id = "DropOffZone", Type = "Objective", AvailableExits = Direction.South | Direction.East,  Tags = new[] { "HighSecurity" }, SpawnWeight = 10 },
-            new RoomTemplate { Id = "ExtractionZone", Type = "Objective", AvailableExits = Direction.North, Tags = new[] { "Escape" }, SpawnWeight = 10 },
-            new RoomTemplate { Id = "CoreReactor", Type = "Objective", AvailableExits = Direction.West, Tags = new[] { "Critical", "Destroy" }, SpawnWeight = 5 },
-
-            // Keys
-            new RoomTemplate { Id = "SecurityCheckpoint", Type = "Key", AvailableExits = Direction.East | Direction.West, Tags = new[] { "Locked", "LaserTraps" }, SpawnWeight = 10 },
-
-            // Normal - Hubs
-            new RoomTemplate { Id = "MainHub", Type = "Normal", AvailableExits = Direction.North | Direction.South | Direction.East | Direction.West, SpawnWeight = 20 },
-            new RoomTemplate { Id = "MainHubLarge", Type = "Normal", AvailableExits = Direction.North | Direction.South | Direction.East | Direction.West, Tags = new[] { "Large" }, SpawnWeight = 10 },
-            new RoomTemplate { Id = "MainHubBroken", Type = "Normal", AvailableExits = Direction.North | Direction.South | Direction.East, Tags = new[] { "Damaged" }, SpawnWeight = 5 },
-
-            // Normal - Hallways
-            new RoomTemplate { Id = "HallwayNS", Type = "Normal", AvailableExits = Direction.North | Direction.South, SpawnWeight = 50 },
-            new RoomTemplate { Id = "HallwayEW", Type = "Normal", AvailableExits = Direction.East | Direction.West, SpawnWeight = 50 },
-
-            // Normal - Corners 
-            new RoomTemplate { Id = "CornerNE", Type = "Normal", AvailableExits = Direction.North | Direction.East, SpawnWeight = 30 },
-            new RoomTemplate { Id = "CornerNW", Type = "Normal", AvailableExits = Direction.North | Direction.West, SpawnWeight = 30 },
-            new RoomTemplate { Id = "CornerSE", Type = "Normal", AvailableExits = Direction.South | Direction.East, SpawnWeight = 30 },
-            new RoomTemplate { Id = "CornerSW", Type = "Normal", AvailableExits = Direction.South | Direction.West, SpawnWeight = 30 },
-
-            // Normal - T-Junctions
-            new RoomTemplate { Id = "TJunctionN", Type = "Normal", AvailableExits = Direction.North | Direction.East | Direction.West, SpawnWeight = 15 },
-            new RoomTemplate { Id = "TJunctionS", Type = "Normal", AvailableExits = Direction.South | Direction.East | Direction.West, SpawnWeight = 15 },
-            new RoomTemplate { Id = "TJunctionE", Type = "Normal", AvailableExits = Direction.North | Direction.South | Direction.East, SpawnWeight = 15 },
-            new RoomTemplate { Id = "TJunctionW", Type = "Normal", AvailableExits = Direction.North | Direction.South | Direction.West, SpawnWeight = 15 },
-
-            // Normal - Crossroad
-            new RoomTemplate { Id = "Crossroad", Type = "Normal", AvailableExits = Direction.North | Direction.South | Direction.East | Direction.West, SpawnWeight = 10 },
-
-            // Normal - Dead Ends (Low Weight)
-            new RoomTemplate { Id = "DeadEndN", Type = "Normal", AvailableExits = Direction.North, SpawnWeight = 5 },
-            new RoomTemplate { Id = "DeadEndS", Type = "Normal", AvailableExits = Direction.South, SpawnWeight = 5 },
-            new RoomTemplate { Id = "DeadEndE", Type = "Normal", AvailableExits = Direction.East, SpawnWeight = 5 },
-            new RoomTemplate { Id = "DeadEndW", Type = "Normal", AvailableExits = Direction.West, SpawnWeight = 5 },
-
-            // Normal - Special
-            new RoomTemplate { Id = "StorageCloset", Type = "Normal", AvailableExits = Direction.West, Tags = new[] { "Loot" }, SpawnWeight = 5 },
-
-            // Hazards
-            new RoomTemplate { Id = "LaserHall", Type = "Hazard", AvailableExits = Direction.North | Direction.South, Tags = new[] { "Laser", "Damage" }, SpawnWeight = 10 },
-            new RoomTemplate { Id = "SpikeTrapRoom", Type = "Hazard", AvailableExits = Direction.East | Direction.West, Tags = new[] { "Spikes", "Timing" }, SpawnWeight = 10 },
-            new RoomTemplate { Id = "GasChamber", Type = "Hazard", AvailableExits = Direction.North | Direction.East, Tags = new[] { "Poison" }, SpawnWeight = 5 },
-
-            // Puzzles
-            new RoomTemplate { Id = "SwitchPuzzle", Type = "Puzzle", AvailableExits = Direction.North | Direction.South, Tags = new[] { "Switch" }, SpawnWeight = 10 },
-            new RoomTemplate { Id = "PressurePlatePuzzle", Type = "Puzzle", AvailableExits = Direction.East | Direction.West, Tags = new[] { "Weight" }, SpawnWeight = 10 },
-            new RoomTemplate { Id = "CodeLockRoom", Type = "Puzzle", AvailableExits = Direction.North, Tags = new[] { "Code" }, SpawnWeight = 5 }
-        };
+        Console.WriteLine($"[Debug] Total Templates Loaded: {templates.Count}");
+        Console.WriteLine($"[Debug] Start Templates Found: {templates.Count(t => t.Type == RoomTypes.Start)}");
+        Console.WriteLine($"[Debug] Default Templates Found: {templates.Count(t => t.Type == RoomTypes.Default)}");
 
         var config = new DungeonGenerationConfig
         {
-            Seed = 0,
-            MaxTotalRooms = 12,
+            Seed = 01,
+            MaxTotalRooms = 9,
 
-            StartRoomType = "Start",
-            ObjectiveRoomType = "Objective",
-            StandardRoomType = "Normal",
+            StartRoomType = RoomTypes.Start,
+            ObjectiveRoomType = RoomTypes.Objective,
+            StandardRoomType = RoomTypes.Default,
 
-            MinObjectiveDistance = 7,
-            MaxObjectiveDistance = 14,
+            MinObjectiveDistance = 5,
+            MaxObjectiveDistance = 8,
 
-            TypeLimits = new Dictionary<string, RoomLimit>
+            TypeLimits = new Dictionary<RoomType, RoomLimit>
             {
-                { "Start", new RoomLimit(1, 1) },
-                { "Objective", new RoomLimit(1, 1) },
-                { "Puzzle", new RoomLimit(0, 2)},
-                { "Hazard", new RoomLimit(0, 2)},
-                { "Key", new RoomLimit(0, 2)}
+                { RoomTypes.Start, new RoomLimit(1, 1) },
+                { RoomTypes.Objective, new RoomLimit(1, 1) },
+                { RoomTypes.Key, new RoomLimit(0, 2)},
+                { RoomTypes.Hazard, new RoomLimit(0, 2)},
+                { RoomTypes.Puzzle, new RoomLimit(0, 2)}
             }
         };
 
         var generator = new Core.Generators.DungeonGenerator(
                     new IDungeonGenerationStep[]
                     {
-                      new RandomizedDfsStep(),
+                      //new RandomizedDfsStep(),
+                      new SpanningTreeStep(),
                       new ApplyConstraintsStep()
                     }
                 );
 
-        Console.WriteLine($"Generating max {config.MaxTotalRooms} rooms using RandomizedDfsStep...");
+        Console.WriteLine(
+            $"Generating max {config.MaxTotalRooms} rooms using: {string.Join(", ", generator.Steps.Select(s => s.GetType().Name))}"
+            );
+
         var map = generator.Generate(templates, config);
 
         Console.WriteLine($"Generation Complete. Total Rooms: {map.AllRooms.Count}\n");
@@ -117,13 +70,14 @@ public class Program
             Console.WriteLine(new string('-', 40));
         }
 
-        var symbolLegend = new Dictionary<string, char>
+        var symbolLegend = new Dictionary<RoomType, char>
         {
-            { "Start", 'S' },
-            { "Objective", 'O' }, { "Key", 'K' },
-            { "Hazard", 'H' },
-            { "Puzzle", '?' },
-            { "Normal", '+' }
+            { RoomTypes.Start, 'S' },
+            { RoomTypes.Objective, 'O' },
+            { RoomTypes.Key, 'K' },
+            { RoomTypes.Hazard, 'H' },
+            { RoomTypes.Puzzle, '?' },
+            { RoomTypes.Default, '+' }
         };
 
         Console.WriteLine(map.ToAsciiString(0, symbolLegend));

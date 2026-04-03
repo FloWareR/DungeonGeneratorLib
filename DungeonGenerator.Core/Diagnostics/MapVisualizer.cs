@@ -8,7 +8,7 @@ namespace Core.Diagnostics;
 
 public static class MapVisualizer
 {
-    public static string ToAsciiString(this DungeonMap map, int zLevel = 0, Dictionary<string, char>? typeSymbols = null)
+    public static string ToAsciiString(this DungeonMap map, int zLevel = 0, Dictionary<RoomType, char>? typeSymbols = null)
     {
         if (map.AllRooms.Count == 0) return "Map is empty.";
 
@@ -64,7 +64,7 @@ public static class MapVisualizer
         return sb.ToString();
     }
 
-    private static char GetSymbol(RoomTemplate template, Dictionary<string, char>? typeSymbols)
+    private static char GetSymbol(RoomTemplate template, Dictionary<RoomType, char>? typeSymbols)
     {
         if (typeSymbols != null && typeSymbols.TryGetValue(template.Type, out char customSymbol))
         {
