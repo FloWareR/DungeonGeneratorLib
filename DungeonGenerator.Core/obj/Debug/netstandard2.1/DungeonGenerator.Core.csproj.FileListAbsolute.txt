@@ -1,0 +1,9 @@
+/home/floware/FILES/GameDev/Libraries/DungeonGeneratorLib/DungeonGenerator.Core/bin/Debug/netstandard2.1/DungeonGenerator.Core.deps.json
+/home/floware/FILES/GameDev/Libraries/DungeonGeneratorLib/DungeonGenerator.Core/bin/Debug/netstandard2.1/DungeonGenerator.Core.dll
+/home/floware/FILES/GameDev/Libraries/DungeonGeneratorLib/DungeonGenerator.Core/bin/Debug/netstandard2.1/DungeonGenerator.Core.pdb
+/home/floware/FILES/GameDev/Libraries/DungeonGeneratorLib/DungeonGenerator.Core/obj/Debug/netstandard2.1/DungeonGenerator.Core.GeneratedMSBuildEditorConfig.editorconfig
+/home/floware/FILES/GameDev/Libraries/DungeonGeneratorLib/DungeonGenerator.Core/obj/Debug/netstandard2.1/DungeonGenerator.Core.AssemblyInfoInputs.cache
+/home/floware/FILES/GameDev/Libraries/DungeonGeneratorLib/DungeonGenerator.Core/obj/Debug/netstandard2.1/DungeonGenerator.Core.AssemblyInfo.cs
+/home/floware/FILES/GameDev/Libraries/DungeonGeneratorLib/DungeonGenerator.Core/obj/Debug/netstandard2.1/DungeonGenerator.Core.csproj.CoreCompileInputs.cache
+/home/floware/FILES/GameDev/Libraries/DungeonGeneratorLib/DungeonGenerator.Core/obj/Debug/netstandard2.1/DungeonGenerator.Core.dll
+/home/floware/FILES/GameDev/Libraries/DungeonGeneratorLib/DungeonGenerator.Core/obj/Debug/netstandard2.1/DungeonGenerator.Core.pdb
